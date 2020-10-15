@@ -7,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import Link  from '@material-ui/core/Link'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme)=> ({
     toolbarTitle: {
@@ -30,7 +31,7 @@ const secoes = [
     {titulo: 'Área reservada', url: '/login'},
 ]
 const classes = useStyles()
-
+const history = useHistory()
     return (
         <>
             <AppBar position="relative">
@@ -45,14 +46,25 @@ const classes = useStyles()
                     >
                         {titulo}
                     </Typography>
-                    <Button variant="contained"
+                    { localStorage.getItem("logado") !== btoa(process.env.REACT_APP_USER)
+                    ? <Button variant="contained"
                             color="secondary"
                             size="small"
                             href="/login">
                                 Login
                     </Button>
+                    : <Button variant="contained"
+                              color="primary"
+                              size="small"
+                              onClick={() => {
+                                  localStorage.removeItem("logado")
+                                  history.push('/login')
+                              }}
+                              >Logout </Button>
+                    }
                 </Toolbar>
             </AppBar>
+            {localStorage.getItem("logado") !== btoa(process.env.REACT_APP_USER) &&
             <Toolbar component="nav" variant="dense" className={classes.toolbarSecundaria}>
                 {secoes.map((secao) => (
                     <Link
@@ -67,6 +79,7 @@ const classes = useStyles()
                     </Link>
                 ))}
             </Toolbar>
+           }
         </>
     )
 }

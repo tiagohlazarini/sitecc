@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { SettingsSystemDaydreamOutlined } from '@material-ui/icons'
 import { Button } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(theme=> ({
     paper: {
@@ -33,7 +34,8 @@ const useStyles = makeStyles(theme=> ({
 
 
 export default function Login(){
-    const [email, setEmail] = useState('')
+    const history = useHistory() // redireciona a página
+    const [email, setEmail] = useState('') 
     const [senha, setSenha] = useState('')
     const [erro, setErro] = useState(false)
     const [mensagemErro, setMensagemErro] = useState('')
@@ -57,7 +59,7 @@ export default function Login(){
         if(email === process.env.REACT_APP_USER &&
            senha === process.env.REACT_APP_PASSWORD){
                localStorage.setItem("logado", btoa(email))
-               alert("Vou no Menu")
+               history.push('/menu')
            } else {
                setErro(true)
                setMensagemErro('Usuário ou senha inválidos!')
@@ -77,18 +79,25 @@ export default function Login(){
                     </Typography>
                     <form onSubmit={validaLogin}>
                         <TextField
-                            variant="outlined" fullWidth
-                            required  id="email"
-                            label="Endereço de e-mail" autoComplete="email"
-                            autoFocus value={email}
+                            variant="outlined" 
+                            fullWidth
+                            required  
+                            id="email"
+                            label="Endereço de e-mail" 
+                            autoComplete="email"
+                            autoFocus 
+                            value={email}
                             onChange={event => setEmail(event.target.value)}
                             error={erro}
                             margin="normal"
                             />
                             <TextField
-                             variant="outlined" fullWidth
-                             required id="senha"
-                             label="Senha" autoComplete="current-password"
+                             variant="outlined" 
+                             fullWidth
+                             required 
+                             id="senha"
+                             label="Senha" 
+                             autoComplete="current-password"
                              value={senha}
                              onChange={e => setSenha(e.target.value)}
                              error={erro}
